@@ -27,7 +27,14 @@ inputs:
     description: 'Sets the target (chip) for which the project is built'
     required: false
     default: 'esp32'
-
+  path:
+    description: 'Path of the project'
+    required: false
+    default: ''   
+  prebuild_cmd:
+    description: 'prebuild cmd'
+    required: false
+    default: ''   
 runs:
   using: "composite"
   steps:
@@ -58,6 +65,8 @@ runs:
 
     - run: |
         source ~/esp/esp-idf/export.sh
+        cd ${{ inputs.path }}
         idf.py set-target ${{ inputs.esp_idf_target }}
+        ${{ inputs.prebuild_cmd }}
         idf.py build
       shell: bash
